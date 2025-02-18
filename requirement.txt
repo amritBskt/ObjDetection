@@ -1,0 +1,14 @@
+ultralytics
+opencv-python
+numpy
+torch
+torchvision
+scipy
+deep-sort-realtime
+sqlite3
+logging
+multiprocessing
+requests
+
+git+https://github.com/KaiyangZhou/deep-person-reid.git
+

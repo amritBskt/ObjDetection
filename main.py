@@ -132,6 +132,14 @@ def process_video(src, cam_id, shared_selected_ids):
     cv2.namedWindow(window_name)
     cv2.setMouseCallback(window_name, click_callback, param=shared_selected_ids)
     
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    fps = int(cap.get(cv2.CAP_PROP_FPS)) or 30  # Use 30 FPS if reading fails
+
+    output_filename = f"output_cam_{cam_id}.mp4"
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Use 'XVID' for .avi
+    out = cv2.VideoWriter(output_filename, fourcc, fps, (frame_width, frame_height))
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -183,10 +191,12 @@ def process_video(src, cam_id, shared_selected_ids):
                 rectangles[global_id] = (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]), color)
         
         cv2.imshow(window_name, frame)
+        out.write(frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     
     cap.release()
+    out.release()
     cv2.destroyWindow(window_name)
     
     if selected_person:
@@ -223,7 +233,7 @@ def display_tracking_data():
 
 
 if __name__ == "__main__":
-    video_sources = ["video1.mp4", "video2.mp4"]
+    video_sources = ["feed3.mp4", "feed4.mp4"]
     manager = Manager()
     shared_selected_ids = manager.list()
     processes = []

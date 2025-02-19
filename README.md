@@ -85,9 +85,10 @@ ID        Last Seen Camera  Last Seen Time
 - Implement a more advanced database for scalability.
 - Optimize multi-camera synchronization.
 
+## Sample Input Video
+![Demo](inputSample.gif)
+
 ## Sample Output Video
-<video width="600" controls>
-  <source src="https://amritBskt.github.io/ObjDetection/output_cam_0.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Demo](outputSample.gif)
+
 

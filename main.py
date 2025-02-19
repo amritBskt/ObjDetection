@@ -179,15 +179,25 @@ def process_video(src, cam_id, shared_selected_ids):
             if track.is_confirmed():
                 bbox = track.to_tlbr()
                 local_id = track.track_id
-                # print(local_id)
                 global_id = track_map.get(local_id, local_id)
 
-                color = (0, 0, 255) if global_id in shared_selected_ids else (0, 255, 0)
+                x1, y1, x2, y2 = map(int, bbox)
+                x_center = (x1 + x2) // 2  # Midpoint for vertical line
 
-                # color = rectangles.get(global_id, (0, 0, 0, 0, (0, 255, 0)))[4]
+                # Determine color based on selection
+                if global_id in shared_selected_ids:
+                    color = (0, 0, 255)  # Red box if selected
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                else:
+                    color = (0, 255, 0)  # Green vertical line
+                    cv2.line(frame, (x_center, y1), (x_center, y2), color, 2)
 
-                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
-                cv2.putText(frame, f"ID {global_id} (Cam {cam_id})", (int(bbox[0]), int(bbox[1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(frame, f"ID {global_id}", (x_center - 10, y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+                # Store only the vertical line's coordinates for click detection
+                rectangles[global_id] = (x_center, y1, y2, color)
+
                 rectangles[global_id] = (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]), color)
         
         cv2.imshow(window_name, frame)
@@ -233,7 +243,7 @@ def display_tracking_data():
 
 
 if __name__ == "__main__":
-    video_sources = ["feed3.mp4", "feed4.mp4"]
+    video_sources = ["feed3.mp4, feed4.mp4"] # Load video Sources
     manager = Manager()
     shared_selected_ids = manager.list()
     processes = []

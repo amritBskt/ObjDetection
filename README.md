@@ -46,7 +46,7 @@ python main.py
 ## Configuration
 - **YOLO Model**: The script uses `yolov9s.pt` but can be changed to other models.
 - **DeepSORT Parameters**: `max_age=30, nn_budget=100` (Adjust for tracking stability)
-- **ReID Model**: `osnet_x1_0.pth` (Ensure the model file is in the working directory)
+- **ReID Model**: `osnet_x1_ain_0.pth` (Ensure the model file is in the working directory)
 - **Tracking Threshold**: Set in `find_matching_person(new_feature, cam_id, threshold=0.7)`
 
 ## How It Works
@@ -84,3 +84,10 @@ ID        Last Seen Camera  Last Seen Time
 - Add GUI for easier manual tracking adjustments.
 - Implement a more advanced database for scalability.
 - Optimize multi-camera synchronization.
+
+## Sample Output Video
+<video width="600" controls>
+  <source src="https://amritBskt.github.io/ObjDetection/output_cam_0.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
